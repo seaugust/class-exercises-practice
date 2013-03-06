@@ -1,0 +1,176 @@
+%
+% 1- The Idea.tex
+%
+% This LaTeX source file is for section 1- The Idea for
+% the Basic Search lab module for the TAILS project under
+% Dr. Stephanie August.
+%
+\documentclass[11pt]{article}
+\usepackage{fullpage}
+\usepackage{setspace}
+\usepackage{doc}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+%\usepackage{fancyheadings}
+\usepackage{lastpage}
+
+\setlength{\headheight}{15.2pt}
+\pagestyle{fancy}
+\def\thechapter       {\arabic{chapter}}
+
+% Need to work on header/footer still
+%\fancyhf{}
+%\rhead{\thechapter : \chaptername}
+%\lfoot{Loyola Marymount University}
+%\cfoot{\thechapter - \thepage}
+%\rfoot{\chaptername\newline Basic Search}
+
+\title{Basic Search:
+    Implementations of Basic Uninformed and Heuristic Search Algorithms}
+\author{Andrew Won}
+\date{February 16, 2012}
+
+\begin{document}
+\thispagestyle{plain}
+
+\begin{center}
+\textbf{\Large
+\vspace{11mm}\\
+Basic Search:\\
+Implementations of Basic Uninformed and Heuristic\\Search Algorithms}
+\vspace{11mm}\\
+\includegraphics[width=320pt]{3image_cover.jpg}
+\vspace{11mm}\\
+\textbf{\Large Artificial Intelligence Laboratory}
+\vspace{11mm}\\
+\framebox{This document is a TAILS module.}
+\vspace{15mm}\\
+Andrew Won\\
+\today\\
+Loyola Marymount University
+\end{center}
+
+\newpage
+\thispagestyle{fancy}
+
+\chapter{The Idea}
+\section{Purpose}
+The purpose of this lab is to familiarize the experimenter with the basic 
+search algorithms of:
+
+\begin{enumerate}
+  \item[a] Depth-First Search;
+  \item[b] Breadth-First Search;
+  \item[c] Non-Deterministic Search;
+  \item[d] Best-First Search;
+  \item[e] Hill-Climbing Search; and
+  \item[f] A* Search.
+\end{enumerate}
+
+This lab will further introduce the principle of dynamic programming for the
+latter three search types and will introduce the experimenter to the wide 
+applicability of search algorithms in general.  The experimenter will be 
+provided with an interactive game and a working implementation of a basic 
+search algorithm.  While performing experiments in this lab module, an 
+experimenter will learn how to make slight modifications to the basic search 
+algorithm to progress from a Depth-First Search to A* Search.
+
+\section{Background}
+\subsection{BASIC Search}
+Basic search algorithms are widely used in artificial intelligence and many 
+people use basic search algorithms every day without realizing it.  The 
+fundamental purpose of basic search algorithms is to enable an agent to go 
+from a current state to a desired state.  The implementation of a basic search 
+algorithm often requires tree traversal finding either one, or the most 
+efficient, path from the agent's current state, or root node, to its desired 
+state, or frontier node.  Different variants of basic search can be used 
+depending upon the type of problem and how much one knows about the search 
+space within which the basic search algorithm is searching.  We can broadly 
+categorize the basic search algorithms as either uninformed, or blind, search 
+algorithms or informed, or heuristic, search algorithms.
+
+Common examples of the basic search algorithms are in route-finding problems.  
+Two examples we'll explore are maze-solving and node-finding problems.  An
+example of maze-solving can be seen in figure 1a and an example of
+node-finding, taken from Wilson 1992, is presented in Figure 2a.
+
+\subsection{Route Finding: Uninformed / Blind Search}
+An uninformed, or blind, search algorithm knows nothing of the search space and
+discovers everything as it traverses each path.  Let us look into each of our
+three uninformed algorithms in more detail.
+
+\subsubsection{Depth-First Search}
+\begin{center}
+% Depth-First Search Maze graphic by Andrew Won
+\includegraphics[width=300pt]{maze.jpg}\\
+Figure 1a: Solving a Maze: Depth-First
+\end{center}
+
+A depth-first search chooses the first path available and traverses that path
+until it either reaches its goal or cannot go any further.  This is kind of like
+trying to solve a maze and only taking right turns on the first time through. 
+Then if you weren't able to reach your goal you go back to the last time you
+made a right turn and try taking the left path instead.  You continue to do this
+until you reach your goal.  Figure 1a is an example of when depth-first may not
+be the best solution, but in instances when most paths lead to the goal and only
+one path needs to be found a depth-first search works just fine.
+
+\begin{center}
+% Depth-First Search pre-date comic by XKCD
+\includegraphics[width=220pt]{dfs.jpg}\\
+$[$http://xkcd.com/761/$]$
+\end{center}
+
+\subsubsection{Breadth-First Search}
+A breadth-first search takes one step towards every
+neighboring path or node simultaneously.  As a result, a breadth-first search
+does not get as deep as quickly as an alternative basic search would, but it is
+always very thorough.  Breadth-first search can often take the longest amount of
+time and runs the risk of quickly becoming unmanageable in size.  It does,
+however, guarantee the best result if it is possible to reach the goal. 
+Breadth-first is useful if there are many paths that reach the goal and you are
+looking for the most efficient path.  Breadth-first search is also useful if
+there are many different paths the agent can take and you are confident that a
+goal is not too deep into at least one of the paths.
+
+\subsubsection{Non-Deterministic Search}
+Non-deterministic search introduces non-determinism, or randomness, to the uninformed search methods that we've explored.  Non-deterministic search is similar to depth-first search as it traverses a single path until it either reaches a goal state or cannot go any further.  The key difference between depth-first search and non-deterministic search is that each time the agent makes a decision about where to go next it chooses its next path randomly.  If we look to our maze illustration it would be equivalent to randomly choosing a path each time a crossroad is reached.
+
+Non-deterministic search is still a form of uninformed, or blind search and suffers from all of the inefficiencies related, but offers something known as adversary foiling.  With a depth-first search, an agent could perform very inefficiently if the set of states were created in a way so that the depth-first search would purposefully traverse all of the incorrect paths first before ever arriving at the correct path.  A non-deterministic search would successfully foil, or defeat, such an adversarial set of states.
+
+\subsection{Route Finding: Informed / Heuristic Search}
+An informed, or heuristic, search algorithm assumes that you know something
+about the search space.  Consider again our example route finding problem, 
+taken from Winston 1992, and presented in Figure 2a.  If, for instance, you had a
+way of determining exactly how far from your destination you were you could use
+that information to make decisions that brought you closest to your goal.
+Consider the distances mapped in Figure 2b.
+
+\begin{center}
+% Map of lettered points, looks like a finite-state automata
+\includegraphics[width=300pt]{map_fsm.jpg}\\
+Figure 2a: Route Finding Problem
+\cite{winston1992}
+\end{center}
+
+\subsubsection{Best-First Search}
+Consider if an agent was at starting state ``S'', needed to travel to state
+``G'', and did not know how to proceed.  The agent would have to resort to
+uninformed or blind basic searches and would be at a serious disadvantage. 
+Informed, or heuristic, basic searches assume that you have some knowledge about
+the search space you are working in.  This rudimentary knowledge helps the agent
+make informed decisions each time it has to pick a path to travel down.
+
+\subsubsection{Hill-Climbing Search}
+
+
+\subsubsection{A* Search}
+
+
+\newpage
+
+% Generate the bibliography
+\bibliography{references}
+\bibliographystyle{plain}
+
+\end{document}

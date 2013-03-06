@@ -1,4 +1,6 @@
-class-exercises-practice
+SIGCSE-2013 Demo Repo
 ========================
 
-practice github
+Contains poetry
+* Shakespear
+* 
